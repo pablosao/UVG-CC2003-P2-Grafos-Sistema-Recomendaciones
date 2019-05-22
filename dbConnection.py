@@ -24,17 +24,19 @@ class Connection:
         except Exception as e:
             raise Exception('Error: {0}'.format(str(e)))
             
-            
-       
-
+    
     def close(self):
         self._driver.close()
 
+    def createDB(self,query):
+        with self._driver.session() as session:
+            # Eliminamos base de datos si existe
+            deleted = session.write_transaction(self.deleteDB)
+            
+            session.write_transaction(self.createSchema,query)
+            
 
     def greeting(self, message):
-        """
-        
-        """
         greeting = {}
         
         with self._driver.session() as session:
@@ -45,8 +47,14 @@ class Connection:
             '''
         return greeting
 
-    def CreateDatabase(self,create_script):
-        self._driver.session().write_transaction(self._createDataBase,create_script)
+   
+    @staticmethod
+    def deleteDB(tx):
+        try:
+            tx.run('MATCH (n) DETACH DELETE n')
+        except:
+            return False
+        return True
         
 
     @staticmethod
@@ -57,5 +65,5 @@ class Connection:
 
 
     @staticmethod
-    def _createDataBase(tx,create_script):
+    def createSchema(tx,create_script):
         return tx.run(create_script)
