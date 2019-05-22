@@ -4,8 +4,10 @@ Created on Tue May 21 17:28:54 2019
 
 Clase encargada de  realizar la conexión con la base de datos de neo4j
 
-Referencia: https://neo4j-rest-client.readthedocs.io/en/latest/info.html
-
+Referencia:
+    <> https://neo4j-rest-client.readthedocs.io/en/latest/info.html
+    <> https://neo4j.com/developer/python/
+    
 @author: Pablo Sao
 """
 from neo4j import GraphDatabase
