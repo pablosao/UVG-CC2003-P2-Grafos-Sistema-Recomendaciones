@@ -2,7 +2,11 @@
 """
 Created on Tue May 21 17:28:54 2019
 
-@author: pablo
+Clase encargada de  realizar la conexión con la base de datos de neo4j
+
+Referencia: https://neo4j-rest-client.readthedocs.io/en/latest/info.html
+
+@author: Pablo Sao
 """
 from neo4j import GraphDatabase
 
@@ -16,7 +20,7 @@ class Connection:
         self._driver.close()
 
 
-    def print_greeting(self, message):
+    def greeting(self, message):
         with self._driver.session() as session:
             greeting = session.read_transaction(self._create_and_return_greeting, message)
             
