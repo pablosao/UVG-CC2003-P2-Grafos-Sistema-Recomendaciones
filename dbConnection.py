@@ -7,6 +7,8 @@ Clase encargada de  realizar la conexión con la base de datos de neo4j
 Referencia:
     <> https://neo4j-rest-client.readthedocs.io/en/latest/info.html
     <> https://neo4j.com/developer/python/
+    <> PanMat. (2018). How to Access Relationship value from 
+            returned results. Extraído de: https://community.neo4j.com/t/how-to-access-relationship-value-from-returned-results/1316
     
 @author: Pablo Sao
 """
@@ -15,7 +17,14 @@ from neo4j import GraphDatabase
 class Connection:
     
     def __init__(self, uri="", user="", password=""):
-        self._driver = GraphDatabase.driver(uri, auth=(user, password))
+        try:
+            self._driver = GraphDatabase.driver(uri, auth=(user, password))
+        except ImportError:
+            raise Exception('No se ha encontrado el módulo: neo4j')
+        except Exception as e:
+            raise Exception('Error: {0}'.format(str(e)))
+            
+            
        
 
     def close(self):
@@ -23,12 +32,18 @@ class Connection:
 
 
     def greeting(self, message):
+        """
+        
+        """
+        greeting = {}
+        
         with self._driver.session() as session:
             greeting = session.read_transaction(self._create_and_return_greeting, message)
-            
+            '''
             for record in greeting:
-                print(record[0])
-
+                print(record[0]['titulo'] + ' - ' + record[1]['Lugar'])
+            '''
+        return greeting
 
     def CreateDatabase(self,create_script):
         self._driver.session().write_transaction(self._createDataBase,create_script)
@@ -36,7 +51,8 @@ class Connection:
 
     @staticmethod
     def _create_and_return_greeting(tx, message):
-        result = tx.run("match (:Clima {titulo: $message})--(turismo:Turismo) return turismo.Lugar ", message=message)
+        query = "match (cima:Clima {titulo: $message})-[t:TIENE_CLIMA]->(turismo:Turismo)<-[:TURISMO_MUNICIPIO]-(municipio:Municipio) return municipio,turismo order by municipio desc"
+        result = tx.run(query, message=message)
         return result
 
 

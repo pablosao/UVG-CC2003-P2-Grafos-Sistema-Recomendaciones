@@ -10,7 +10,17 @@ from readIni import read_ini
 
 database = read_ini("database.ini","neo4j")
 
+try:
+    ejec = Connection(str(database["bolt"]),str(database["user"]),str(database["password"]))
 
-ejec = Connection(str(database["bolt"]),str(database["user"]),str(database["password"]))
-ejec.print_greeting("Templado")
+    datos = ejec.greeting("Templado")
+    
+    ejec.close()
+    
+except:
+    print("Ocurrio un problema")
 
+
+
+for record in datos:
+    print(record[0]['titulo'] + ' - ' + record[1]['Lugar'])

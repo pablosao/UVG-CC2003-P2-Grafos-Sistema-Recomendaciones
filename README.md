@@ -11,4 +11,6 @@
 
 Neo4j, Inc. (2019). _The Neo4j Drivers Manual 1.7._ Extraído de: https://neo4j.com/docs/driver-manual/1.7/
 
+PanMat. (2018). _How to Access Relationship value from returned results_. Extraído de: https://community.neo4j.com/t/how-to-access-relationship-value-from-returned-results/1316
+    
 Rosa, J. (2016). _neo4j-rest-client Documentation_. Extraído de: https://buildmedia.readthedocs.org/media/pdf/neo4j-rest-client/latest/neo4j-rest-client.pdf
