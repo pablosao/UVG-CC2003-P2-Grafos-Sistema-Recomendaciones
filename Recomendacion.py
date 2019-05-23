@@ -41,7 +41,6 @@ except Exception as e:
     print(str(e))
 
 
-print("Termino")
 '''
 for record in datos:
     print(record[0]['titulo'] + ' - ' + record[1]['Lugar'])
