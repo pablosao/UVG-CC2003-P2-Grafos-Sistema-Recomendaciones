@@ -37,7 +37,7 @@ def CreateDataBase():
         '''
         
         ejec.close()
-        
+        print("Creada")
     except Exception as e:
         print(str(e))
 
