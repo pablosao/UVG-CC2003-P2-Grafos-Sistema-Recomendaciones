@@ -152,7 +152,13 @@ class Mywin(wx.Frame):
             wx.MessageBox('Debe seleccionar un Tipo de Turismo', 'Falta Información', wx.OK | wx.ICON_INFORMATION)
         else:
             tipo_turismo = self.cbtipo_turismo.GetString(self.cbtipo_turismo.GetSelection())
-
+        
+        if(self.cbpresupuesto.GetSelection() < 0 and control):
+            control = control and False
+            wx.MessageBox('Debe seleccionar un Presupuesto', 'Falta Información', wx.OK | wx.ICON_INFORMATION)
+        else:
+            presupuesto = self.cbpresupuesto.GetString(self.cbpresupuesto.GetSelection())
+        
         if(control):
            print(clima)
         
