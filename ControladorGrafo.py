@@ -96,7 +96,6 @@ def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
 
 def ExecQuery(query):
     
-    print("Entra")
     
     datos = []
     
