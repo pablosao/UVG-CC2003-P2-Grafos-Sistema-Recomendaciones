@@ -1,3 +1,5 @@
+# -*- coding: Windows-1252 -*-
+# -*- coding: cp1252 -*-
 # -*- coding: utf-8 -*-
 """
 Created on Tue May 21 17:28:54 2019
@@ -31,23 +33,21 @@ class Connection:
     def createDB(self,query):
         with self._driver.session() as session:
             # Eliminamos base de datos si existe
-            deleted = session.write_transaction(self.deleteDB)
-            
-            session.write_transaction(self.createSchema,query)
-            
+            session.write_transaction(self.deleteDB)
+            session.write_transaction(self.ejecutar,query)
 
-    def greeting(self, message):
+
+    def ejecuteQuery(self,query):        
         greeting = {}
         
         with self._driver.session() as session:
-            greeting = session.read_transaction(self._create_and_return_greeting, message)
-            '''
-            for record in greeting:
-                print(record[0]['titulo'] + ' - ' + record[1]['Lugar'])
-            '''
+            greeting = session.write_transaction(self.ejecutar, query)
+            
+
         return greeting
 
-   
+
+
     @staticmethod
     def deleteDB(tx):
         try:
@@ -55,15 +55,7 @@ class Connection:
         except:
             return False
         return True
-        
 
     @staticmethod
-    def _create_and_return_greeting(tx, message):
-        query = "match (cima:Clima {titulo: $message})-[t:TIENE_CLIMA]->(turismo:Turismo)<-[:TURISMO_MUNICIPIO]-(municipio:Municipio) return municipio,turismo order by municipio desc"
-        result = tx.run(query, message=message)
-        return result
-
-
-    @staticmethod
-    def createSchema(tx,create_script):
-        return tx.run(create_script)
+    def ejecutar(tx,script):
+        return tx.run(script)
