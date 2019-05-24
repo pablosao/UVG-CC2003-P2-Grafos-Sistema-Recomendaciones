@@ -82,8 +82,6 @@ def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
         
         datos = ejec.ejecuteQuery(query)
         
-        print(query)
-        print("\n")
         
         for record in datos:
             print(record[0] + ' - ' + record[4])
@@ -96,11 +94,25 @@ def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
     
 
 
+def ExecQuery(query):
     
+    print("Entra")
     
+    datos = []
     
+    database = read_ini("database.ini","neo4j")
+        
+    try:
+        ejec = Connection(str(database["bolt"]),str(database["user"]),str(database["password"]))
+        
+        datos = ejec.ejecuteQuery(query)
+        ejec.close()
+        
+        
+    except Exception as e:
+        print('Error: {0}'.format(e))
     
-    
-    
+    return datos
+       
     
     
