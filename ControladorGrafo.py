@@ -49,7 +49,9 @@ def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
         
         if(presupuesto != ''):
             query += 'AND '
-    
+    else:
+        query += 'where '
+        
     if(presupuesto != ''):
         query += 'turismo.Presupuesto = "{0}" '.format(presupuesto)
  
