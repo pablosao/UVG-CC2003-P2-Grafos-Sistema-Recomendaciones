@@ -31,31 +31,23 @@ class Connection:
     def createDB(self,query):
         with self._driver.session() as session:
             # Eliminamos base de datos si existe
-            deleted = session.write_transaction(self.deleteDB)
+            session.write_transaction(self.deleteDB)
+            session.write_transaction(self.ejecutar,query)
             
-            session.write_transaction(self.createSchema,query)
-            
-
-    def greeting(self, message):
+    def ejecuteQuery(self,query):
+        
         greeting = {}
         
         with self._driver.session() as session:
-            greeting = session.read_transaction(self._create_and_return_greeting, message)
+            greeting = session.read_transaction(self.ejecutar, query)
+            
             '''
             for record in greeting:
                 print(record[0]['titulo'] + ' - ' + record[1]['Lugar'])
             '''
+        
         return greeting
 
-   
-    @staticmethod
-    def deleteDB(tx):
-        try:
-            tx.run('MATCH (n) DETACH DELETE n')
-        except:
-            return False
-        return True
-        
 
     @staticmethod
     def _create_and_return_greeting(tx, message):
@@ -63,7 +55,14 @@ class Connection:
         result = tx.run(query, message=message)
         return result
 
+    @staticmethod
+    def deleteDB(tx):
+        try:
+            tx.run('MATCH (n) DETACH DELETE n')
+        except:
+            return False
+        return True
 
     @staticmethod
-    def createSchema(tx,create_script):
+    def ejecutar(tx,create_script):
         return tx.run(create_script)
