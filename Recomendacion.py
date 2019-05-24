@@ -12,7 +12,10 @@ Created on Tue May 21 19:02:48 2019
 import ControladorGrafo
 
 
+#Forma de utilizar la creación de base de datos
+ControladorGrafo.CreateDataBase()
 
+# Forma de utilizar la busqueda de coincidencia
 ControladorGrafo.FindMatch('Cálido'.encode('raw_unicode_escape').decode('utf-8'),
                            'QQ'.encode('raw_unicode_escape').decode('utf-8'),
                            'Aventura'.encode('raw_unicode_escape').decode('utf-8')

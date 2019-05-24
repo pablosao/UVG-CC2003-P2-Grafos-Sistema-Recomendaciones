@@ -35,29 +35,18 @@ class Connection:
             # Eliminamos base de datos si existe
             session.write_transaction(self.deleteDB)
             session.write_transaction(self.ejecutar,query)
-            
-    def ejecuteQuery(self,query):
-        
+
+
+    def ejecuteQuery(self,query):        
         greeting = {}
-        
-        
         
         with self._driver.session() as session:
             greeting = session.write_transaction(self.ejecutar, query)
             
-            '''
-            for record in greeting:
-                print(record[0]['titulo'] + ' - ' + record[1]['Lugar'])
-            '''
-        
+
         return greeting
 
 
-    @staticmethod
-    def _create_and_return_greeting(tx, message):
-        query = "match (cima:Clima {titulo: $message})-[t:TIENE_CLIMA]->(turismo:Turismo)<-[:TURISMO_MUNICIPIO]-(municipio:Municipio) return municipio,turismo order by municipio desc"
-        result = tx.run(query, message=message)
-        return result
 
     @staticmethod
     def deleteDB(tx):
