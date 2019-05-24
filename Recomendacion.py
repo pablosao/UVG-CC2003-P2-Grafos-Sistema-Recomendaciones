@@ -7,8 +7,6 @@
 Created on Tue May 21 19:02:48 2019
 
 @author: Pablo Sao
-@author: Andrea Elias
-@author: Juan Fernando de Leon
 """
 
 import ControladorGrafo

@@ -1,3 +1,5 @@
+# -*- coding: Windows-1252 -*-
+# -*- coding: cp1252 -*-
 # -*- coding: utf-8 -*-
 """
 Created on Tue May 21 17:28:54 2019
@@ -38,8 +40,10 @@ class Connection:
         
         greeting = {}
         
+        
+        
         with self._driver.session() as session:
-            greeting = session.read_transaction(self.ejecutar, query)
+            greeting = session.write_transaction(self.ejecutar, query)
             
             '''
             for record in greeting:
@@ -64,5 +68,5 @@ class Connection:
         return True
 
     @staticmethod
-    def ejecutar(tx,create_script):
-        return tx.run(create_script)
+    def ejecutar(tx,script):
+        return tx.run(script)

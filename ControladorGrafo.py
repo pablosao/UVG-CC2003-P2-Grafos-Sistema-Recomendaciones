@@ -1,9 +1,11 @@
+# -*- coding: Windows-1252 -*-
+# -*- coding: cp1252 -*-
 # -*- coding: utf-8 -*-
-"""
+'''
 Created on Thu May 23 15:55:26 2019
 
 @author: pablo
-"""
+'''
 from dbConnection import Connection
 from readIni import read_ini
 import os
@@ -67,9 +69,30 @@ def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
         query += 'where cviaje.titulo = "{0}" '.format(tipo_viaje)
 
     query += ('match (municipio:Municipio)--(turismo) ' +
-                'return municipio,cviaje,tTurismo,clima,turismo ')
+                'return municipio.titulo,cviaje.titulo,tTurismo.titulo,clima.titulo,turismo.Lugar ')
                     
-    print(query)
+    
+    
+    database = read_ini("database.ini","neo4j")
+        
+    try:
+        ejec = Connection(str(database["bolt"]),str(database["user"]),str(database["password"]))
+        
+        
+        
+        datos = ejec.ejecuteQuery(query)
+        
+        print(query)
+        print("\n")
+        
+        for record in datos:
+            print(record[0] + ' - ' + record[4])
+        
+        
+        ejec.close()
+        
+    except Exception as e:
+        print('Error: {0}'.format(e))
     
 
 
