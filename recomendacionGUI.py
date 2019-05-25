@@ -11,6 +11,7 @@ Programa Principal para recomendación de lugares turisticos
 
 import wx
 import ControladorGrafo
+import inLugarTuristico
 
 class Recomendaciones(wx.Frame): 
         
@@ -21,6 +22,7 @@ class Recomendaciones(wx.Frame):
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
         fileItemCDB = fileMenu.Append(wx.ID_ANY, 'Crear DB', 'Crear Base de Datos')
+        fileItemTurismo = fileMenu.Append(wx.ID_ANY, 'Crear Lugar Turistico', 'Crear Lugar Turistico')
         fileItemClose = fileMenu.Append(wx.ID_EXIT, 'Cerrar', 'Cerrar Aplicación')
         menubar.Append(fileMenu, '&Archivo')
         self.SetMenuBar(menubar)
@@ -30,6 +32,7 @@ class Recomendaciones(wx.Frame):
         
         # Evento de menu de opciones
         self.Bind(wx.EVT_MENU, self.CreateDB, fileItemCDB)
+        self.Bind(wx.EVT_MENU, self.openTurismo, fileItemTurismo)
         self.Bind(wx.EVT_MENU, self.OnQuit, fileItemClose)
         
         #Texto Inicial
@@ -250,6 +253,10 @@ class Recomendaciones(wx.Frame):
         
         wx.MessageBox("Base de Datos Creada", 'Recomendación', wx.OK | wx.ICON_INFORMATION)
 
+    def openTurismo(self,e):
+        app = wx.App() 
+        inLugarTuristico.lugarTuristico(None,  'Ingreso de Lugar Turistico') 
+        app.MainLoop()
 
     def OnQuit(self, e):
         self.Close()

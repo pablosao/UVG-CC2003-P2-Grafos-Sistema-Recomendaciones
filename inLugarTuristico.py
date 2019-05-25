@@ -249,6 +249,9 @@ class lugarTuristico(wx.Frame):
                 print("Creo relación")
             else:
                 wx.MessageBox('El nodo ya existe', 'Creación de Nodo', wx.OK | wx.ICON_INFORMATION)
+
+"""
 app = wx.App() 
 lugarTuristico(None,  'Ingreso de Lugar Turistico') 
 app.MainLoop()
+"""
