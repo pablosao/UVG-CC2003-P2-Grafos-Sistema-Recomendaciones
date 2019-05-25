@@ -1,4 +1,5 @@
 
+
 CREATE (GTM:Pais {Nombre: 'Guatemala'})
 CREATE (rpeten:Region {Nombre: 'Petén'})
 CREATE (metropolitana:Region {Nombre: 'Metropolitana'})
@@ -277,6 +278,7 @@ CREATE (arqueologico:Tipo_Turismo {titulo: 'Arqueológico'})
 CREATE (viajeSolo:Tipo_Viaje {titulo: 'Solo'})
 CREATE (viajeAmigos:Tipo_Viaje {titulo: 'Amigos/as'})
 CREATE (viajeFamilia:Tipo_Viaje {titulo: 'Familiar'})
+
 
 CREATE (rpeten)-[:REGION_PAIS {roles:['Region Pais']}]->(GTM)
 CREATE (metropolitana)-[:REGION_PAIS {roles:['Region Pais']}]->(GTM)
