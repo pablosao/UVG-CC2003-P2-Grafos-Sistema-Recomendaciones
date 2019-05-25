@@ -2,18 +2,21 @@
 """
 Created on Thu May 23 23:58:54 2019
 
-@author: pablo
+Programa Principal para recomendación de lugares turisticos
+
+@author: Pablo Sao
+@author: Andrea Elias
+@author: Juan Fernando de Leon
 """
 
 import wx
 import ControladorGrafo
-class Mywin(wx.Frame): 
-    
-    
-    
+
+class Recomendaciones(wx.Frame): 
+        
     def __init__(self, parent, title): 
    
-        super(Mywin, self).__init__(parent, title = title,size = (320,400))
+        super(Recomendaciones, self).__init__(parent, title = title,size = (320,400))
         
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
@@ -253,5 +256,5 @@ class Mywin(wx.Frame):
         
         
 app = wx.App() 
-Mywin(None,  'Recomendación Turistica') 
+Recomendaciones(None,  'Recomendación Turistica') 
 app.MainLoop()
