@@ -44,6 +44,8 @@ def CreateDataBase():
 
 def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
     
+    datos = []
+    
     query = 'match (clima:Clima)-[:TIENE_CLIMA]->(turismo:Turismo) '
     
     if(clima != ''):
@@ -82,15 +84,18 @@ def FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje):
         
         datos = ejec.ejecuteQuery(query)
         
-        
+        """
         for record in datos:
-            print(record[0] + ' - ' + record[4])
-        
+            recomendacion += (record[0] + ' - ' + record[4] +'\n')
+            #print(record[0] + ' - ' + record[4])
+        """
         
         ejec.close()
         
     except Exception as e:
         print('Error: {0}'.format(e))
+        
+    return datos
     
 
 

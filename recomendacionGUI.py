@@ -160,7 +160,19 @@ class Mywin(wx.Frame):
             presupuesto = self.cbpresupuesto.GetString(self.cbpresupuesto.GetSelection())
         
         if(control):
-           print(clima)
+           datos = ControladorGrafo.FindMatch(clima,presupuesto,tipo_turismo,tipo_viaje)
+
+           recomendacion = ""
+           
+           for record in datos:
+               recomendacion += (record[0] + ' - ' + record[4] +'\n')
+               
+           if(recomendacion == ""):
+               recomendacion = "No se encontraron lugares turisticos con los \nfiltros seleccionados"
+               
+           mensaje = "Recomendación: \n\n" + recomendacion
+           
+           wx.MessageBox(mensaje, 'Recomendación', wx.OK | wx.ICON_INFORMATION)
         
         
     def OnCombo(self, event): 
