@@ -210,8 +210,7 @@ class lugarTuristico(wx.Frame):
             nombre_nodo = self.tblugar_turistico.GetValue()
         
         if(control):
-            print("ingreso nodo")
-            
+                       
             # Verificamos si existe el nódo
             query = 'match (turismo:Turismo) where turismo.Lugar =~ "(?i).*{0}.*" return turismo.Lugar'.format(nombre_nodo)
             
@@ -251,6 +250,11 @@ class lugarTuristico(wx.Frame):
                                 
                 ControladorGrafo.ExecQuery(query)
                 
+                #Se crea relación con tipo de turismo
+                query = 'MATCH (tTurismo:Tipo_Turismo {titulo: "%s"}),(turismo:Turismo) WHERE id(turismo) = %d create (turismo)-[:CATEGORIA_TURISMO {roles:["Categoria Turismo"]}]->(tTurismo) RETURN * ' % (tipo_turismo,idNewNode)
+                 
+                ControladorGrafo.ExecQuery(query)
+                                
                 
                 
                 self.tblugar_turistico.SetValue("") 
