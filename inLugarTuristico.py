@@ -232,7 +232,7 @@ class lugarTuristico(wx.Frame):
                 ControladorGrafo.ExecQuery(query)
                 
                 
-                query = 'match (turismo:Turismo) where turismo.Lugar = "PABLO SAO" return id(turismo)'.format(nombre_nodo)
+                query = 'match (turismo:Turismo) where turismo.Lugar = "{0}" return id(turismo)'.format(nombre_nodo)
                 datos = ControladorGrafo.ExecQuery(query)
                 
                 idNewNode = -1
@@ -247,6 +247,11 @@ class lugarTuristico(wx.Frame):
                 ControladorGrafo.ExecQuery(query)
                 
                 print("Creo relación")
+                
+                
+                
+                wx.MessageBox('Se a creado el Lugar turistico y sus relaciones.', 'Creación de Nodo', wx.OK | wx.ICON_INFORMATION)
+                
             else:
                 wx.MessageBox('El nodo ya existe', 'Creación de Nodo', wx.OK | wx.ICON_INFORMATION)
 
