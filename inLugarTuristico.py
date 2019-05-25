@@ -170,7 +170,7 @@ class lugarTuristico(wx.Frame):
         self.Show() 
     
     def createNode(self,event):
-        
+        control = True
         clima = ""
         tipo_viaje = ""
         tipo_turismo = ""
