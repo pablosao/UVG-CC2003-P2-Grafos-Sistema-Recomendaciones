@@ -171,12 +171,12 @@ class lugarTuristico(wx.Frame):
     
     def createNode(self,event):
         
-        control = True
         clima = ""
         tipo_viaje = ""
         tipo_turismo = ""
         presupuesto = ""
         nombre_nodo = ""
+        municipio = ""
         
         #print(self.TIPO_CLIMA[self.cbtipo_clima.GetSelection()])
         if(self.cbtipo_clima.GetSelection() < 0 and control):
@@ -202,12 +202,23 @@ class lugarTuristico(wx.Frame):
             wx.MessageBox('Debe seleccionar un Presupuesto', 'Falta Información', wx.OK | wx.ICON_INFORMATION)
         else:
             presupuesto = self.cbpresupuesto.GetString(self.cbpresupuesto.GetSelection())
+            
+        
+        if(self.cbmunicipio.GetSelection() < 0 and control):
+            control = control and False
+            wx.MessageBox('Debe seleccionar un Municipio', 'Falta Información', wx.OK | wx.ICON_INFORMATION)
+        else:
+            municipio = self.cbmunicipio.GetString(self.cbmunicipio.GetSelection())
+        
         
         if(self.tblugar_turistico.GetValue() == ""):
             control = control and False
             wx.MessageBox('Debe seleccionar un el Nombre del Nodo', 'Falta Información', wx.OK | wx.ICON_INFORMATION)
         else:
             nombre_nodo = self.tblugar_turistico.GetValue()
+            
+            
+        
         
         if(control):
                        
@@ -254,7 +265,13 @@ class lugarTuristico(wx.Frame):
                 query = 'MATCH (tTurismo:Tipo_Turismo {titulo: "%s"}),(turismo:Turismo) WHERE id(turismo) = %d create (turismo)-[:CATEGORIA_TURISMO {roles:["Categoria Turismo"]}]->(tTurismo) RETURN * ' % (tipo_turismo,idNewNode)
                  
                 ControladorGrafo.ExecQuery(query)
-                                
+                
+
+                #Se crea relación con municipio
+                query = 'MATCH (municipio:Municipio {titulo: "%s"}),(turismo:Turismo) WHERE id(turismo) = %d create (municipio)-[:TURISMO_MUNICIPIO {roles:["Turismo Municipio"]}]->(turismo) RETURN * ' % (municipio,idNewNode)
+                
+                
+                ControladorGrafo.ExecQuery(query)
                 
                 
                 self.tblugar_turistico.SetValue("") 
