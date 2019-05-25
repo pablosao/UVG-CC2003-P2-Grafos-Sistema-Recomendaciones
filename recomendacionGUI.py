@@ -7,7 +7,7 @@ Created on Thu May 23 23:58:54 2019
 
 import wx
 import ControladorGrafo
-
+import time
 class Mywin(wx.Frame): 
     
     
@@ -17,22 +17,35 @@ class Mywin(wx.Frame):
         
         
                 
-        super(Mywin, self).__init__(parent, title = title,size = (320,370)) 
+        super(Mywin, self).__init__(parent, title = title,size = (320,400)) 
 		
-        panel = wx.Panel(self) 
+        menubar = wx.MenuBar()
+        fileMenu = wx.Menu()
+        fileItemCDB = fileMenu.Append(wx.ID_ANY, 'Crear DB', 'Crear Base de Datos')
+        fileItemClose = fileMenu.Append(wx.ID_EXIT, 'Cerrar', 'Cerrar Aplicación')
+        menubar.Append(fileMenu, '&Archivo')
+        self.SetMenuBar(menubar)
+        
+        self.panel = wx.Panel(self) 
         box = wx.BoxSizer(wx.VERTICAL) 
         
-        #Texto Inicial
-        self.label = wx.StaticText(panel,label = "Recomendacion" ,style = wx.ALIGN_CENTRE) 
-        box.Add(self.label, 0 , wx.EXPAND |wx.ALIGN_CENTER_HORIZONTAL |wx.ALL, 20) 
+        # Evento de menu de opciones
+        self.Bind(wx.EVT_MENU, self.CreateDB, fileItemCDB)
+        self.Bind(wx.EVT_MENU, self.OnQuit, fileItemClose)
         
+        #Texto Inicial
+        self.titulo = wx.StaticText(self.panel,label = "Recomendacion" ,style = wx.ALIGN_CENTRE) 
+        box.Add(self.titulo, 0 , wx.EXPAND |wx.ALIGN_CENTER_HORIZONTAL |wx.ALL, 20) 
+        
+                
         #Configuración ComboBox para selección de Clima
-        lbtipo_clima = wx.StaticText(panel,label = "Escoja Clima",style = wx.ALIGN_CENTRE) 
+        lbtipo_clima = wx.StaticText(self.panel,label = "Escoja Clima",style = wx.ALIGN_CENTRE) 
         box.Add(lbtipo_clima,0,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         
         # Creando información de ComboBox con datos de la base de datos
         self.TIPO_CLIMA = []
+        
         
         query = "match (clima:Clima) return clima.titulo  order by clima.titulo"
         
@@ -43,11 +56,11 @@ class Mywin(wx.Frame):
         
         
         #self.TIPO_CLIMA = ['Templado', 'Húmedo', 'Frío', 'Lluvioso', 'Cálido'] 
-        self.cbtipo_clima = wx.Choice(panel,choices = self.TIPO_CLIMA) 
+        self.cbtipo_clima = wx.Choice(self.panel,choices = self.TIPO_CLIMA) 
         box.Add(self.cbtipo_clima,1,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         #Configuración ComboBox para selección del Tipo de Viaje
-        self.lbtipo_viaje = wx.StaticText(panel,label = "Tipo Viaje",style = wx.ALIGN_CENTRE) 
+        self.lbtipo_viaje = wx.StaticText(self.panel,label = "Tipo Viaje",style = wx.ALIGN_CENTRE) 
         box.Add(self.lbtipo_viaje,0,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         
@@ -64,11 +77,11 @@ class Mywin(wx.Frame):
         
         
         #self.TIPO_VIAJE = ['Amigos/as', 'Familia', 'Solo']
-        self.cbtipo_viaje = wx.Choice(panel,choices = self.TIPO_VIAJE) 
+        self.cbtipo_viaje = wx.Choice(self.panel,choices = self.TIPO_VIAJE) 
         box.Add(self.cbtipo_viaje,1,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         #Configuración ComboBox para selección del Tipo de Turismo
-        self.lbtipo_turismo= wx.StaticText(panel,label = "Tipo Turismo",style = wx.ALIGN_CENTRE) 
+        self.lbtipo_turismo= wx.StaticText(self.panel,label = "Tipo Turismo",style = wx.ALIGN_CENTRE) 
         box.Add(self.lbtipo_turismo,0,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         
@@ -85,21 +98,21 @@ class Mywin(wx.Frame):
                 
         
         #self.TIPO_TURISMO = ['Aventura', 'Arqueológico', 'Ecoturismo']
-        self.cbtipo_turismo = wx.Choice(panel,choices = self.TIPO_TURISMO) 
+        self.cbtipo_turismo = wx.Choice(self.panel,choices = self.TIPO_TURISMO) 
         box.Add(self.cbtipo_turismo,1,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5)
         
         
         #Configuración ComboBox para selección de Presupuesto
-        self.lbtipo_turismo= wx.StaticText(panel,label = "Tipo Presupuesto",style = wx.ALIGN_CENTRE) 
+        self.lbtipo_turismo= wx.StaticText(self.panel,label = "Tipo Presupuesto",style = wx.ALIGN_CENTRE) 
         box.Add(self.lbtipo_turismo,0,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         PRESUPUESTO = ['Q', 'QQ', 'QQQ','QQQQ']
-        self.cbpresupuesto = wx.Choice(panel,choices = PRESUPUESTO) 
+        self.cbpresupuesto = wx.Choice(self.panel,choices = PRESUPUESTO) 
         box.Add(self.cbpresupuesto,1,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5)
         
         
         # Agregamos botón para consulta
-        self.btconsulta = wx.Button(panel,-1,"Obtener Recomendación") 
+        self.btconsulta = wx.Button(self.panel,-1,"Obtener Recomendación") 
         box.Add(self.btconsulta,0,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         
@@ -113,16 +126,13 @@ class Mywin(wx.Frame):
         if(not self.cbtipo_clima.IsEmpty()):
             self.cbtipo_clima.SetSelection(0)
         
-        if(not self.cbtipo_clima.IsEmpty()):
+        if(not self.cbtipo_viaje.IsEmpty()):
             self.cbtipo_viaje.SetSelection(0)
         
-        if(not self.cbtipo_clima.IsEmpty()):
+        if(not self.cbtipo_turismo.IsEmpty()):
             self.cbtipo_turismo.SetSelection(0)
-        
-        
-        
 		
-        panel.SetSizer(box) 
+        self.panel.SetSizer(box) 
         self.Centre() 
         self.Show() 
     
@@ -175,17 +185,77 @@ class Mywin(wx.Frame):
            wx.MessageBox(mensaje, 'Recomendación', wx.OK | wx.ICON_INFORMATION)
         
         
-    def OnCombo(self, event): 
-        #self.label.SetLabel("You selected"+self.combo.GetValue()+" from Combobox") 
-        self.label.SetLabel("You selected from Combobox") 
-		
-    def OnChoice(self,event): 
-        self.label.SetLabel("You selected from Combobox") 
-        #self.label.SetLabel("You selected "+ self.choice.GetString
-        # (self.choice.GetSelection())+" from Choice") 
+    
         
+    
+    def CreateDB(self, e):
+        
+        
+        # Creamos Base de Datos
+        ControladorGrafo.CreateDataBase()
+        
+        # Cargamos ComboBoxs
+        
+        # Creando información de ComboBox con datos de la base de datos
+        
+        self.TIPO_CLIMA = []
+        
+        query = "match (clima:Clima) return clima.titulo  order by clima.titulo"
+        
+        dato = ControladorGrafo.ExecQuery(query)
+        
+        self.cbtipo_clima.Clear()
+        
+        for record in dato:
+            self.TIPO_CLIMA.append(record[0])
+            self.cbtipo_clima.Append(record[0])
+        
+        
+         # Creando información de ComboBox con datos de la base de datos
+        self.TIPO_VIAJE = []
+        
+        query = "match (tViaje:Tipo_Viaje) return tViaje.titulo  order by tViaje.titulo"
+        
+        dato = ControladorGrafo.ExecQuery(query)
+         
+        self.cbtipo_viaje.Clear()
+        
+        for record in dato:
+            self.TIPO_VIAJE.append(record[0])
+            self.cbtipo_viaje.Append(record[0])
+        
+        
+        # Creando información de ComboBox con datos de la base de datos
+        self.TIPO_TURISMO = []
+        
+        query = "match (tTurismo:Tipo_Turismo) return tTurismo.titulo  order by tTurismo.titulo"
+        
+        dato = ControladorGrafo.ExecQuery(query)
+         
+        self.cbtipo_turismo.Clear()
+        
+        for record in dato:
+            self.TIPO_TURISMO.append(record[0])
+            self.cbtipo_turismo.Append(record[0])
+        
+        
+        if(not self.cbtipo_clima.IsEmpty()):
+            self.cbtipo_clima.SetSelection(0)
+        
+        if(not self.cbtipo_viaje.IsEmpty()):
+            self.cbtipo_viaje.SetSelection(0)
+        
+        if(not self.cbtipo_turismo.IsEmpty()):
+            self.cbtipo_turismo.SetSelection(0)
+		
+        
+        wx.MessageBox("Base de Datos Creada", 'Recomendación', wx.OK | wx.ICON_INFORMATION)
 
-                             
+
+    def OnQuit(self, e):
+        self.Close()
+        
+        
 app = wx.App() 
 Mywin(None,  'Recomendación Turistica') 
 app.MainLoop()
