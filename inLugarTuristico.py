@@ -240,15 +240,20 @@ class lugarTuristico(wx.Frame):
                     if(idNewNode == -1):
                         idNewNode = record[0]
                 
+                #Se crea relación con clima
                 query = 'MATCH (clima:Clima {titulo: "%s"}),(turismo:Turismo) WHERE id(turismo) = %d create (clima)-[:TIENE_CLIMA {roles:["Clima Lugar"]}]->(turismo) RETURN * ' % (clima,idNewNode) 
-                
-                print(query)
                 
                 ControladorGrafo.ExecQuery(query)
                 
-                print("Creo relación")
+                
+                #Se crea relación con tipo de viaje
+                query = 'MATCH (tViaje:Tipo_Viaje {titulo: "%s"}),(turismo:Turismo) WHERE id(turismo) = %d create (tViaje)-[:CATEGORIA_VIAJE {roles:["Categoria Viaje"]}]->(turismo) RETURN * ' % (tipo_viaje,idNewNode)
+                                
+                ControladorGrafo.ExecQuery(query)
                 
                 
+                
+                self.tblugar_turistico.SetValue("") 
                 
                 wx.MessageBox('Se a creado el Lugar turistico y sus relaciones.', 'Creación de Nodo', wx.OK | wx.ICON_INFORMATION)
                 
