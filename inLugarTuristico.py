@@ -142,7 +142,7 @@ class lugarTuristico(wx.Frame):
         #--------------------------------------------------------------------------
         
         # Agregamos botón para consulta
-        self.btconsulta = wx.Button(self.panel,-1,"Obtener Recomendación") 
+        self.btconsulta = wx.Button(self.panel,-1,"Crear Nodo") 
         box.Add(self.btconsulta,0,wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALL,5) 
         
         
@@ -224,13 +224,31 @@ class lugarTuristico(wx.Frame):
             
             if(coincidencias == 0):
                 
+                
                 #creamos nódo
                 nodo = nombre_nodo.replace(" ","").upper()
                 
                 query = 'CREATE (%s:Turismo {Lugar: "%s", Presupuesto: "%s"})' % (nodo,nombre_nodo,presupuesto)
                 ControladorGrafo.ExecQuery(query)
                 
-        
+                
+                query = 'match (turismo:Turismo) where turismo.Lugar = "PABLO SAO" return id(turismo)'.format(nombre_nodo)
+                datos = ControladorGrafo.ExecQuery(query)
+                
+                idNewNode = -1
+                for record in datos:
+                    if(idNewNode == -1):
+                        idNewNode = record[0]
+                
+                query = 'MATCH (clima:Clima {titulo: "%s"}),(turismo:Turismo) WHERE id(turismo) = %d create (clima)-[:TIENE_CLIMA {roles:["Clima Lugar"]}]->(turismo) RETURN * ' % (clima,idNewNode) 
+                
+                print(query)
+                
+                ControladorGrafo.ExecQuery(query)
+                
+                print("Creo relación")
+            else:
+                wx.MessageBox('El nodo ya existe', 'Creación de Nodo', wx.OK | wx.ICON_INFORMATION)
 app = wx.App() 
 lugarTuristico(None,  'Ingreso de Lugar Turistico') 
 app.MainLoop()
