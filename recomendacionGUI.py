@@ -7,18 +7,14 @@ Created on Thu May 23 23:58:54 2019
 
 import wx
 import ControladorGrafo
-import time
 class Mywin(wx.Frame): 
     
     
     
     def __init__(self, parent, title): 
+   
+        super(Mywin, self).__init__(parent, title = title,size = (320,400))
         
-        
-        
-                
-        super(Mywin, self).__init__(parent, title = title,size = (320,400)) 
-		
         menubar = wx.MenuBar()
         fileMenu = wx.Menu()
         fileItemCDB = fileMenu.Append(wx.ID_ANY, 'Crear DB', 'Crear Base de Datos')
